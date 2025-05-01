@@ -34,12 +34,38 @@ The first step involved cleaning and preparing the datasets using BigQuery:
 5. Split "coordinates" columns into separate latitude and longitude fields
 6. Applied additional transformations to facilitate grouping and joins, such as creating a Year-Quarter column for easier time-based aggregation
 
-#### Exploratory analysis
-We analysed in total 28 millions of flights with a fare range between 67$ and 465$, a max delay of 141 min and 10 different airlines.
+#### 📈 Exploratory analysis
+We analyzed a total of 28 million flights, with fares ranging from $67 to $465, a maximum recorded delay of 141 minutes, and flights operated by 10 different airlines.
 
-In the picture below it is possible to observe the trend 
+The chart below illustrates the trend in the number of flights over the years, along with the distribution of punctuality. A significant drop in flight volume can be observed in 2020, due to the impact of the COVID-19 pandemic. This reduction also coincides with fewer delays, possibly because lower air traffic decreased the likelihood of flight disruptions.
 ![image](https://github.com/user-attachments/assets/883ec481-5bbf-4720-bf99-8e97553efd55)
 
+The heatmap reveals a higher concentration of delays on the East Coast compared to other regions. This observation led us to further investigate the impact of weather conditions, using a third dataset, to explore potential correlations.
+![Screenshot 2025-05-01 185354](https://github.com/user-attachments/assets/0dadb4bc-a70a-4a4f-8324-83bf3c3230c6)
 
+We analyzed the relationship between different features and we could conclude that:
+1. There is no correlation between `distance` and `delay` (Pearson correlation value of 0.0064) - higher distance does not encourage higher delays 
 
+![image](https://github.com/user-attachments/assets/1fecdc4d-1a53-4a8e-9754-14f0683c9fe0)
+
+2. There is small correlation between `fare` and `delay` (correlation value 0.1057)
+
+![image](https://github.com/user-attachments/assets/5dbb51f8-dd5e-4907-8c81-248f70ced56d)
+
+5. There is high correlation between `distance` and `fare`
+   - <b>A/B Testing</b> with a <b>t-test</b> to compare the means of cheap and expensive group
+     <div><b><font style="font-size: 18px;" face="Quicksand">H0:&nbsp;</font></b></div><font style="font-size: 18px;" face="Quicksand"><div style=""> There is no difference in the mean far of the two groups
+   
+     <div><b><font style="font-size: 18px;" face="Quicksand">Results:&nbsp;</font></b></div><font style="font-size: 18px;" face="Quicksand"><div style="">Lower mean for close flight group;&nbsp;</div><div style="">p-value 0&nbsp; &gt;&gt; H0 can be rejected</div></font>
+
+   - <b>Correlation Test </b>and <b>LInear Regression Model</b>
+
+     <div><b><font style="font-size: 18px;" face="Quicksand">Results:&nbsp;</font></b></div><font style="font-size: 18px;" face="Quicksand"><div style="">Correlation of 0.5426 indicating a moderate positive correlation&nbsp;</div><div style="">R²: 0.294&gt;&gt; only 29.4% of fares can be explained by distance</div><div style="">p-value 0 &gt;&gt; R2 is statistically significant</div><div style="">Coefficient: 0.0557</div></font>
+
+![image](https://github.com/user-attachments/assets/7755a752-3fa9-4819-b6dc-26cfa09f8722)
+
+7. There is strong statistical difference in the distribution of `delay` between different `airline price category`
+8. There is strong statistical difference in the distribution of `fare` between different `destination/origin regions`
+9. There is strong statistical difference in the distribution of `delay` between different `air traffic conditions`
+   
 
