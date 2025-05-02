@@ -38,34 +38,59 @@ The first step involved cleaning and preparing the datasets using BigQuery:
 We analyzed a total of 28 million flights, with fares ranging from $67 to $465, a maximum recorded delay of 141 minutes, and flights operated by 10 different airlines.
 
 The chart below illustrates the trend in the number of flights over the years, along with the distribution of punctuality. A significant drop in flight volume can be observed in 2020, due to the impact of the COVID-19 pandemic. This reduction also coincides with fewer delays, possibly because lower air traffic decreased the likelihood of flight disruptions.
+
 ![image](https://github.com/user-attachments/assets/883ec481-5bbf-4720-bf99-8e97553efd55)
 
 The heatmap reveals a higher concentration of delays on the East Coast compared to other regions. This observation led us to further investigate the impact of weather conditions, using a third dataset, to explore potential correlations.
 ![Screenshot 2025-05-01 185354](https://github.com/user-attachments/assets/0dadb4bc-a70a-4a4f-8324-83bf3c3230c6)
 
-We analyzed the relationship between different features and we could conclude that:
-1. There is no correlation between `distance` and `delay` (Pearson correlation value of 0.0064) - higher distance does not encourage higher delays 
+#### 🔍 Key findings
+1. No Correlation Between `Distance` and `Delay`
+   - Pearson correlation: 0.0064 → Indicates no relationship; longer flights do not cause more delays 
 
 ![image](https://github.com/user-attachments/assets/1fecdc4d-1a53-4a8e-9754-14f0683c9fe0)
 
-2. There is small correlation between `fare` and `delay` (correlation value 0.1057)
+2. Weak Correlation Between `Fare` and `Delay`
+   - Pearson correlation: 0.1057
 
 ![image](https://github.com/user-attachments/assets/5dbb51f8-dd5e-4907-8c81-248f70ced56d)
 
-5. There is high correlation between `distance` and `fare`
-   - <b>A/B Testing</b> with a <b>t-test</b> to compare the means of cheap and expensive group
-     <div><b><font style="font-size: 18px;" face="Quicksand">H0:&nbsp;</font></b></div><font style="font-size: 18px;" face="Quicksand"><div style=""> There is no difference in the mean far of the two groups
-   
-     <div><b><font style="font-size: 18px;" face="Quicksand">Results:&nbsp;</font></b></div><font style="font-size: 18px;" face="Quicksand"><div style="">Lower mean for close flight group;&nbsp;</div><div style="">p-value 0&nbsp; &gt;&gt; H0 can be rejected</div></font>
-
-   - <b>Correlation Test </b>and <b>LInear Regression Model</b>
-
-     <div><b><font style="font-size: 18px;" face="Quicksand">Results:&nbsp;</font></b></div><font style="font-size: 18px;" face="Quicksand"><div style="">Correlation of 0.5426 indicating a moderate positive correlation&nbsp;</div><div style="">R²: 0.294&gt;&gt; only 29.4% of fares can be explained by distance</div><div style="">p-value 0 &gt;&gt; R2 is statistically significant</div><div style="">Coefficient: 0.0557</div></font>
+5. Moderate Correlation Between `Distance` and `Fare`
+   - Pearson correlation: 0.5426
+   - A/B Testing (t-test): Compared mean fares between short- and long-distance flights.
+     - H₀: No difference in mean fare between the two groups.
+     - Result: Lower mean fare for shorter flights; p-value = 0 → H₀ rejected.
+   - Linear Regression:
+     - R² = 0.294 → Distance explains ~29.4% of fare variation.
+     - Coefficient = 0.0557; p-value = 0 → Model is statistically significant.
 
 ![image](https://github.com/user-attachments/assets/7755a752-3fa9-4819-b6dc-26cfa09f8722)
 
-7. There is strong statistical difference in the distribution of `delay` between different `airline price category`
-8. There is strong statistical difference in the distribution of `fare` between different `destination/origin regions`
-9. There is strong statistical difference in the distribution of `delay` between different `air traffic conditions`
+7. Statistically Significant Difference in Delays by Airline Price Category
+   - Airlines grouped by fare:
+     - Low-cost (≤ $150)
+     - Medium-cost (≤ $250)
+     - High-cost (> $250)
+   - Test: Kruskal-Wallis
+   - Result: p-value = 0.009571 → Significant difference in delays across airline categories
+
+![image](https://github.com/user-attachments/assets/3cc24f03-9689-494e-882b-0dbc881679bd)
+
+9. Significant Difference in Fare Across Geographic Regions
+   - Airports grouped into: West, Midwest, South, Northeast
+   - Tests: ANOVA and Kruskal-Wallis
+   - Result: p-value ≈ 0.000 → Fare varies significantly by region
+     
+![image](https://github.com/user-attachments/assets/1ec0adbe-30b6-41e2-a72e-88bcd5280dac)
+
+
+11. Delay Strongly Affected by Weather Conditions
+    - Tests: ANOVA and Kruskal-Wallis
+    - Results:
+      - H-statistic = 1612.51
+      - p-value ≈ 0.000
+        → Severe weather significantly increases delays
+
+
    
 
