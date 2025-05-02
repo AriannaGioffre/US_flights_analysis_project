@@ -91,6 +91,31 @@ The heatmap reveals a higher concentration of delays on the East Coast compared 
       - p-value ≈ 0.000
         → Severe weather significantly increases delays
 
+## 🔍 Feature Selection & Modeling Approach
+Based on the results mentioned above, features that showed strong correlation or statistical difference have been selected to build predictive and clustering models.
+
+#### 📊 Predictive Models Informed by Statistical Tests
+1. Fare Prediction
+   - Selected features:
+     - distance
+     - destination/origin regions
+     - year + quarter
+   - Model: Trees - Random Forest Regression
+   - Model score: 0.9418
+     
+2. Delay Prediction
+   - Features:
+     - weather
+     - destination/origin regions
+     - air traffic
+     - airline category
+   - Model: Trees - Random Forest Regression
+   - Model score: 0.8327
+  
+
+  
+
+   
 
    
 
